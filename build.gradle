@@ -1,0 +1,22 @@
+allprojects {
+    group 'com.cc.jsdk2'
+    version '1.0'
+}
+
+subprojects {
+    apply plugin: 'java'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenLocal()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        mavenCentral()
+
+    }
+
+    dependencies {
+        compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
+        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
+    }
+}
