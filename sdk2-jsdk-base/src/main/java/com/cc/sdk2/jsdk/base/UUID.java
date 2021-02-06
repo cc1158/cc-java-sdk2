@@ -1,6 +1,6 @@
-package com.cc.jsdk2.base;
+package com.cc.sdk2.jsdk.base;
 
-import com.cc.jsdk2.base.constants.BaseConstant;
+import com.cc.sdk2.jsdk.base.constants.BaseConstant;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

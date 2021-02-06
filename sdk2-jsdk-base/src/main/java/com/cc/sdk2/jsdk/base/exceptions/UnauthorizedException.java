@@ -1,4 +1,4 @@
-package com.cc.jsdk2.base.exceptions;
+package com.cc.sdk2.jsdk.base.exceptions;
 
 /**
  * unauthorized exception

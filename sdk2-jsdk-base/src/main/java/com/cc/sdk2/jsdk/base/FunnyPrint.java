@@ -1,4 +1,4 @@
-package com.cc.jsdk2.base;
+package com.cc.sdk2.jsdk.base;
 
 /**
  * boring print things
