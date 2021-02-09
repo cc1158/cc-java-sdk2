@@ -1,6 +1,6 @@
 package com.cc.sdk2.jsdk.commons.jdbc;
 
-import com.cc.jsdk.utility.StringUtils;
+import com.cc.sdk2.jsdk.commons.utils.StringUtil;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -33,7 +33,7 @@ public class OrderByHelper {
                 String sign = matcher.group(1) == null ? "+" : matcher.group(1);
                 String field = matcher.group(2);
                 String columnName = null;
-                if (!StringUtils.isNullOrEmpty(field)) {
+                if (!StringUtil.isNullOrEmpty(field)) {
                     for (Field f : fields) {
                         if (f.getName().equals(field)) {
                             TColumn tColumn = f.getDeclaredAnnotation(TColumn.class);
