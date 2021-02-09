@@ -10,6 +10,10 @@ package com.cc.sdk2.jsdk.base.exceptions;
 public class UnauthorizedException extends BaseException {
 
 
+    public UnauthorizedException(String msgCode) {
+        super(msgCode);
+    }
+
     public UnauthorizedException(String message, String msgCode) {
         super(message, msgCode);
     }

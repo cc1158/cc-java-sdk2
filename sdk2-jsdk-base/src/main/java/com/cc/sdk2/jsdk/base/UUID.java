@@ -1,7 +1,5 @@
 package com.cc.sdk2.jsdk.base;
 
-import com.cc.sdk2.jsdk.base.constants.BaseConstant;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;

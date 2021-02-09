@@ -1,3 +1,4 @@
 rootProject.name = 'cc-java-sdk2'
 include 'sdk2-jsdk-base'
+include 'sdk2-jsdk-commons'
 

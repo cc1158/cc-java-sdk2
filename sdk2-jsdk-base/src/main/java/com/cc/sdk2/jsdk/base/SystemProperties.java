@@ -1,4 +1,4 @@
-package com.cc.sdk2.jsdk.base.constants;
+package com.cc.sdk2.jsdk.base;
 
 /**
  * All rights reserved, copyright@cc.hu
