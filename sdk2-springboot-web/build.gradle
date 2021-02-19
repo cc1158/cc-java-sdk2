@@ -16,6 +16,7 @@ dependencies {
         exclude(group: 'org.springframework.boot', module: 'spring-boot-starter-logging')
     }
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.3.8.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.3.8.RELEASE'
     compile group: 'com.lmax', name: 'disruptor', version: '3.4.2'
 }
 

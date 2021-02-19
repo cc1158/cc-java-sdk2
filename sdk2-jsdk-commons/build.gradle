@@ -18,6 +18,8 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.3'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.10.3'
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.68'
+    compile group: 'com.google.guava', name: 'guava', version: '28.1-jre'
+    compile group: 'org.ehcache', name: 'ehcache', version: '3.8.1'
 }
 
 tasks.withType(JavaCompile) {

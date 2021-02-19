@@ -47,7 +47,7 @@ public final class ResultBuilder {
      * @param errorCode errorcode 实现对象
      * @return api result 对象
      */
-    public static ApiResult<?> getErrorResult(ErrorCode errorCode) {
+    public static ApiResult<?> failure(ErrorCode errorCode) {
         return new ApiResult<>(errorCode.getCode(), errorCode.getMsg());
     }
 
@@ -57,8 +57,8 @@ public final class ResultBuilder {
      * @param msg 提示
      * @return api result 对象
      */
-    public static ApiResult<?> getErrorResult(String msg) {
-        return new ApiResult<>(BaseErrorCode.Business_Error.code, BaseErrorCode.Business_Error.msg);
+    public static ApiResult<?> failure(String msg) {
+        return new ApiResult<>(BaseErrorCode.Business_Error.code, msg);
     }
 
 

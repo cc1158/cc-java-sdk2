@@ -7,15 +7,19 @@ import com.cc.sdk2.springboot.web.configurations.mvc.version.ApiVersionRequestMa
 import com.cc.sdk2.springboot.web.servlet.listener.TraceIdGenerateListener;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.servlet.resource.ResourceUrlProvider;
 
+import javax.servlet.ServletRequestListener;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +34,10 @@ public class BaseWebMvcConfig extends WebMvcConfigurationSupport {
 
     @Bean
     @Override
-    public RequestMappingHandlerMapping requestMappingHandlerMapping() {
+    public RequestMappingHandlerMapping requestMappingHandlerMapping(ContentNegotiationManager contentNegotiationManager, FormattingConversionService conversionService, ResourceUrlProvider resourceUrlProvider) {
         ApiVersionRequestMapping versionMapping = new ApiVersionRequestMapping();
         versionMapping.setOrder(0);
-        versionMapping.setInterceptors(getInterceptors());
+        versionMapping.setInterceptors(getInterceptors(conversionService, resourceUrlProvider));
         return versionMapping;
     }
 
@@ -91,8 +95,8 @@ public class BaseWebMvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public ServletListenerRegistrationBean addSessionListener() {
-        ServletListenerRegistrationBean listenerRegistrationBean = new ServletListenerRegistrationBean();
+    public ServletListenerRegistrationBean<ServletRequestListener> addSessionListener() {
+        ServletListenerRegistrationBean<ServletRequestListener> listenerRegistrationBean = new ServletListenerRegistrationBean<>();
         listenerRegistrationBean.setListener(new TraceIdGenerateListener());
         return listenerRegistrationBean;
     }

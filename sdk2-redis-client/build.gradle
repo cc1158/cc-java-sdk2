@@ -1,0 +1,32 @@
+
+plugins {
+    id 'java'
+    id 'maven'
+}
+
+group 'com.cc.jsdk2'
+version '1.0'
+
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile project(':sdk2-jsdk-commons')
+
+    compile group: 'redis.clients', name: 'jedis', version: '3.1.0'
+    compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: '2.3.8.RELEASE'
+    annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: '2.3.8.RELEASE'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            mavenLocal()
+            //repository(url: uri('E:/m2/repo/'))
+        }
+    }
+}

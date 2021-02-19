@@ -2,6 +2,7 @@ package com.cc.sdk2.test.jsdk.commons;
 
 import org.junit.Test;
 import com.cc.sdk2.jsdk.commons.date.DateUtil;
+
 import java.util.Date;
 
 /**
@@ -20,5 +21,10 @@ public class TestDateUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testFormat() {
+        System.out.println(DateUtil.formatDate(new Date(), "yyyy-MM-dd HH:mm:ss.SZ"));
     }
 }
