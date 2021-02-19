@@ -4,8 +4,6 @@ plugins {
     id 'maven'
 }
 
-group 'com.cc.jsdk2'
-version '1.0'
 
 
 dependencies {

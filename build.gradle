@@ -1,5 +1,5 @@
 allprojects {
-    group 'com.cc.sdk2'
+    group 'com.cc'
     version '1.0'
 }
 
