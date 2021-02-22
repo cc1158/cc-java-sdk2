@@ -15,7 +15,7 @@ public final class ResultBuilder {
      *
      * @return 成功结果
      */
-    public static ApiResult<?> getSuccess() {
+    public static ApiResult<?> success() {
         return new ApiResult<>(BaseErrorCode.Success.code, BaseErrorCode.Success.msg);
     }
 
@@ -26,7 +26,7 @@ public final class ResultBuilder {
      * @param <T>  类型
      * @return api result对象
      */
-    public static <T> ApiResult<T> getSuccess(T data) {
+    public static <T> ApiResult<T> success(T data) {
         return new ApiResult<>(BaseErrorCode.Success.code, BaseErrorCode.Success.msg, data);
     }
 

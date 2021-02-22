@@ -4,7 +4,6 @@ plugins {
 }
 
 
-
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
@@ -14,7 +13,10 @@ dependencies {
         exclude(group: 'org.springframework.boot', module: 'spring-boot-starter-logging')
     }
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.3.8.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.3.8.RELEASE'
+    compile ('org.springframework.boot:spring-boot-starter-validation:2.3.8.RELEASE') {
+        exclude(group: 'org.springframework.boot', module: 'spring-boot-starter-logging')
+        exclude(group: 'org.springframework.boot', module: 'spring-boot-starter')
+    }
     compile group: 'com.lmax', name: 'disruptor', version: '3.4.2'
 }
 
