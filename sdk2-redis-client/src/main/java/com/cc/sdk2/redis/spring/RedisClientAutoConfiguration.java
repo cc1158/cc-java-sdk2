@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class RedisClientAutoConfiguration {
 
     @Bean(name = "ccRedisClient")
-    @ConditionalOnProperty(prefix = "cc-redis", name = {"enabled"}, matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "cc-redis", name = {"hosts"})
     public RedisClient createRedisClient(RedisClientConfigurationProperties properties) {
         RedisClient redisClient;
         try {

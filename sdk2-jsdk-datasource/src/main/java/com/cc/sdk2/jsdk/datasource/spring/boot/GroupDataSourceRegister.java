@@ -86,7 +86,7 @@ public class GroupDataSourceRegister implements ImportBeanDefinitionRegistrar, E
                 org.apache.tomcat.jdbc.pool.DataSource tomcatDataSource = (org.apache.tomcat.jdbc.pool.DataSource) dataSource;
                 PoolConfiguration poolProperties = tomcatDataSource.getPoolProperties();
                 Binder.get(this.environment).bind("spring.datasource.tomcat", Bindable.ofInstance(poolProperties));
-                Binder.get(environment).bind("cc-datasource." + prefix, Bindable.ofInstance(poolProperties));
+                Binder.get(environment).bind(GroupDataSourceProperties.prefix + "." + prefix, Bindable.ofInstance(poolProperties));
             }
             return dataSource;
         });
@@ -98,7 +98,7 @@ public class GroupDataSourceRegister implements ImportBeanDefinitionRegistrar, E
     private DataSourceProperties getDataSourceProperties(String key) {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
         Binder.get(this.environment).bind("spring.datasource", Bindable.ofInstance(dataSourceProperties));
-        Binder.get(this.environment).bind(GroupDataSourceProperties.prefix + key, Bindable.ofInstance(dataSourceProperties));
+        Binder.get(this.environment).bind(GroupDataSourceProperties.prefix + "." + key, Bindable.ofInstance(dataSourceProperties));
         if (dataSourceProperties.getType() == null) {
             dataSourceProperties.setType(org.apache.tomcat.jdbc.pool.DataSource.class);
 

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.cc.jsdk.datasource.spring.boot.GroupDataSourceAutoConfiguration
+  com.cc.sdk2.jsdk.datasource.spring.boot.GroupDataSourceAutoConfiguration

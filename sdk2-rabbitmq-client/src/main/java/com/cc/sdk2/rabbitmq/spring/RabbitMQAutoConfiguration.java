@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @EnableConfigurationProperties({RabbitMQProperties.class})
 @Import(RabbitMQRegister.class)
-@ConditionalOnProperty(prefix = "cc-rabbitmq")
+@ConditionalOnProperty(prefix = "cc-rabbitmq", name = "hosts")
 public class RabbitMQAutoConfiguration {
 
     @Bean
