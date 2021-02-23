@@ -46,6 +46,11 @@ public class RabbitMQRegister implements EnvironmentAware, ImportBeanDefinitionR
     }
 
     void registerRabbitMQClient(BeanDefinitionRegistry registry) {
+        if (StringUtil.isNullOrEmpty(rabbitProperties.getHosts())
+                || StringUtil.isNullOrEmpty(rabbitProperties.getUser())
+                || StringUtil.isNullOrEmpty(rabbitProperties.getPassword())) {
+            throw new RuntimeException("请检查RabbitMQ客户端配置: Hosts, user, password不能为空");
+        }
         BeanDefinition definition = BeanDefinitionBuilder
                 .genericBeanDefinition(RabbitMQClient.class, this::createRabbitMQClient)
                 .getBeanDefinition();
