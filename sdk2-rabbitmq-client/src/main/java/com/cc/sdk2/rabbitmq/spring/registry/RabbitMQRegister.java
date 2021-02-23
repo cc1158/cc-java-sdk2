@@ -1,5 +1,6 @@
 package com.cc.sdk2.rabbitmq.spring.registry;
 
+import com.cc.sdk2.jsdk.commons.utils.StringUtil;
 import com.cc.sdk2.rabbitmq.RabbitMQClient;
 import com.cc.sdk2.rabbitmq.consumer.RabbitMQConsumer;
 import com.cc.sdk2.rabbitmq.producer.RabbitMQProducer;
@@ -57,6 +58,11 @@ public class RabbitMQRegister implements EnvironmentAware, ImportBeanDefinitionR
         }
         //注册生产者
         rabbitProperties.getProducers().forEach(item -> {
+            if (StringUtil.isNullOrEmpty(item.getId())
+                    || StringUtil.isNullOrEmpty(item.getExchange())
+                    || StringUtil.isNullOrEmpty(item.getRoutingKey())) {
+                throw new RuntimeException("请检查RabbitMQ消费者配置: id, exchange, routingKey不能为空");
+            }
             BeanDefinition definition = BeanDefinitionBuilder
                     .rootBeanDefinition(RabbitMQProducer.class)
                     .setLazyInit(false)
@@ -70,24 +76,28 @@ public class RabbitMQRegister implements EnvironmentAware, ImportBeanDefinitionR
 
     void registerConsumers(BeanDefinitionRegistry registry) {
         if (CollectionUtils.isEmpty(rabbitProperties.getConsumers())) {
-            return ;
+            return;
         }
         //注册消费者
         rabbitProperties.getConsumers().forEach(item -> {
+            if (StringUtil.isNullOrEmpty(item.getId())
+                    || StringUtil.isNullOrEmpty(item.getQueue())
+                    || StringUtil.isNullOrEmpty(item.getRoutingKey())) {
+                throw new RuntimeException("请检查RabbitMQ消费者配置: id, queue, routingKey不能为空");
+            }
             BeanDefinition definition = BeanDefinitionBuilder
                     .rootBeanDefinition(RabbitMQConsumer.class)
                     .setLazyInit(false)
                     .addConstructorArgReference(rabbitProperties.getClientName())
                     .addConstructorArgValue(item)
                     .setDestroyMethodName(RabbitMQConsumer.destroyMethod)
-                    .getBeanDefinition()
-                    ;
+                    .getBeanDefinition();
             registry.registerBeanDefinition(item.getId(), definition);
         });
 
     }
 
     RabbitMQClient createRabbitMQClient() {
-        return new RabbitMQClient(this.rabbitProperties.getUser(), this.rabbitProperties.getPassword(), this.rabbitProperties.getHosts());
+        return new RabbitMQClient(this.rabbitProperties.getUser(), this.rabbitProperties.getPassword(), this.rabbitProperties.getHosts(), this.rabbitProperties.getVHost());
     }
 }

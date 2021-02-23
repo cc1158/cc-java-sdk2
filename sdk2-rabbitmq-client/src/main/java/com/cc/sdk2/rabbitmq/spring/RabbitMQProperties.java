@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,11 +42,11 @@ public class RabbitMQProperties {
     /**
      * message consumers
      */
-    private List<Consumer> consumers;
+    private List<Consumer> consumers = new ArrayList<>();
     /**
      * message producers
      */
-    private List<Producer> producers;
+    private List<Producer> producers = new ArrayList<>();
 
     /**
      * mq message consumer
