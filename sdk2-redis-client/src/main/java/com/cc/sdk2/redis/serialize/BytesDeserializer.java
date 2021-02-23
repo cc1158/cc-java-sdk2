@@ -4,15 +4,14 @@ package com.cc.sdk2.redis.serialize;
  * 数组反序列化
  * @author cc
  */
-public interface BytesDeserializer {
+@FunctionalInterface
+public interface BytesDeserializer<R> {
 
     /**
      * deserialize to obj
      * @param value  the redis value
-     * @param clazz     the fixed class
-     * @param <T>  class template
-     * @return
+     * @return 序列化后的类型
      */
-    <T> T deserialize(byte[] value, Class<T> clazz);
+    R apply(byte[] value);
 
 }

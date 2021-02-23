@@ -4,14 +4,13 @@ package com.cc.sdk2.redis.serialize;
  * 字符串反序列化
  * @author Administrator
  */
-public interface StringDeserializer {
+@FunctionalInterface
+public interface StringDeserializer<R> {
     /**
      * deserialize string to object
      * @param value the redis value
-     * @param clazz the fixed class
-     * @param <T> class template
-     * @return
+     * @return 要序列化的类型
      */
-   <T> T deserialize(String value, Class<T> clazz);
+   R apply(String value);
 
 }

@@ -109,8 +109,8 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T get(String key, StringDeserializer deserializer, Class<T> clazz) {
-        return deserializer.deserialize(jedisCluster.get(key), clazz);
+    public <R> R get(String key, StringDeserializer<R> deserializer) {
+        return deserializer.apply(jedisCluster.get(key));
     }
 
     @Override
@@ -119,8 +119,8 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T get(byte[] key, BytesDeserializer deserializer, Class<T> clazz) {
-        return deserializer.deserialize(jedisCluster.get(key), clazz);
+    public <R> R get(byte[] key, BytesDeserializer<R> deserializer) {
+        return deserializer.apply(jedisCluster.get(key));
     }
 
     @Override
@@ -129,18 +129,8 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> String set(String key, T value, StringSerializer serializer) {
-        return jedisCluster.set(key, serializer.serialize(value));
-    }
-
-    @Override
     public String set(byte[] key, byte[] value) {
         return jedisCluster.set(key, value);
-    }
-
-    @Override
-    public <T> String set(byte[] key, T value, BytesSerializer serializer) {
-        return jedisCluster.set(key, serializer.serialize(value));
     }
 
     @Override
@@ -159,18 +149,8 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> String setex(String key, int secs, T value, StringSerializer serializer) {
-        return jedisCluster.setex(key, secs, serializer.serialize(value));
-    }
-
-    @Override
     public String setex(byte[] key, int secs, byte[] value) {
         return jedisCluster.setex(key, secs, value);
-    }
-
-    @Override
-    public <T> String setex(byte[] key, int secs, T value, BytesSerializer serializer) {
-        return jedisCluster.setex(key, secs, serializer.serialize(value));
     }
 
     @Override
@@ -209,32 +189,8 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> Long lpush(String key, T[] values, StringSerializer serializer) {
-        if (values != null && values.length > 0) {
-            List<String> strList = new ArrayList<>();
-            for (T item : values) {
-                strList.add(serializer.serialize(item));
-            }
-            return jedisCluster.lpush(key, (String[]) strList.toArray());
-        }
-        throw new IllegalArgumentException("values are null");
-    }
-
-    @Override
     public Long lpush(byte[] key, byte[]... values) {
         return jedisCluster.lpush(key, values);
-    }
-
-    @Override
-    public <T> Long lpush(byte[] key, T[] values, BytesSerializer serializer) {
-        if (values != null && values.length > 0) {
-            Long ret = null;
-            for (T item : values) {
-                ret = jedisCluster.lpush(key, serializer.serialize(item));
-            }
-            return ret;
-        }
-        throw new IllegalArgumentException("values are null");
     }
 
     @Override
@@ -243,8 +199,8 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T rpop(String key, StringDeserializer deserializer, Class<T> clazz) {
-        return deserializer.deserialize(jedisCluster.get(key), clazz);
+    public <R> R rpop(String key, StringDeserializer<R> deserializer) {
+        return deserializer.apply(jedisCluster.get(key));
     }
 
     @Override
@@ -253,8 +209,8 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T rpop(byte[] key, BytesDeserializer deserializer, Class<T> clazz) {
-        return deserializer.deserialize(jedisCluster.get(key), clazz);
+    public <R> R rpop(byte[] key, BytesDeserializer<R> deserializer) {
+        return deserializer.apply(jedisCluster.get(key));
     }
 
     @Override
@@ -263,32 +219,8 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> Long rpush(String key, T[] values, StringSerializer serializer) {
-        if (values != null && values.length > 0) {
-            List<String> strList = new ArrayList<>();
-            for (T item : values) {
-                strList.add(serializer.serialize(item));
-            }
-            return jedisCluster.rpush(key, (String[]) strList.toArray());
-        }
-        throw new RuntimeException("values are null");
-    }
-
-    @Override
     public Long rpush(byte[] key, byte[]... values) {
         return jedisCluster.rpush(key, values);
-    }
-
-    @Override
-    public <T> Long rpush(byte[] key, T[] values, BytesSerializer serializer) {
-        if (values != null && values.length > 0) {
-            Long ret = null;
-            for (T item : values) {
-                jedisCluster.rpush(key, serializer.serialize(item));
-            }
-            return ret;
-        }
-        throw new RuntimeException("values are null");
     }
 
     @Override
@@ -297,8 +229,8 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T lpop(String key, StringDeserializer deserializer, Class<T> clazz) {
-        return deserializer.deserialize(jedisCluster.get(key), clazz);
+    public <R> R lpop(String key, StringDeserializer<R> deserializer) {
+        return deserializer.apply(jedisCluster.get(key));
     }
 
     @Override
@@ -307,8 +239,8 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T lpop(byte[] key, BytesDeserializer deserializer, Class<T> clazz) {
-        return deserializer.deserialize(jedisCluster.get(key), clazz);
+    public <R> R lpop(byte[] key, BytesDeserializer<R> deserializer) {
+        return deserializer.apply(jedisCluster.get(key));
     }
 
     @Override
@@ -317,13 +249,13 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> List<T> lrange(String key, long start, long end, StringDeserializer deserializer, Class<T> clazz) {
-        List<T> ret = null;
+    public <R> List<R> lrange(String key, long start, long end, StringDeserializer<R> deserializer) {
+        List<R> ret = null;
         List<String> values = jedisCluster.lrange(key, start, end);
         if (values != null && values.size() > 0) {
             ret = new ArrayList<>();
             for (String item : values) {
-                ret.add(deserializer.deserialize(item, clazz));
+                ret.add(deserializer.apply(item));
             }
         }
         return ret;
@@ -335,13 +267,13 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> List<T> lrang(byte[] key, long start, long end, BytesDeserializer deserializer, Class<T> clazz) {
-        List<T> ret = null;
+    public <R> List<R> lrang(byte[] key, long start, long end, BytesDeserializer<R> deserializer) {
+        List<R> ret = null;
         List<byte[]> values = jedisCluster.lrange(key, start, end);
         if (values != null && values.size() > 0) {
             ret = new ArrayList<>();
             for (byte[] item : values) {
-                ret.add(deserializer.deserialize(item, clazz));
+                ret.add(deserializer.apply(item));
             }
         }
         return ret;
@@ -383,8 +315,8 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T hget(String key, String field, StringDeserializer deserializer, Class<T> clazz) {
-        return deserializer.deserialize(jedisCluster.hget(key, field), clazz);
+    public <R> R hget(String key, String field, StringDeserializer<R> deserializer) {
+        return deserializer.apply(jedisCluster.hget(key, field));
     }
 
     @Override
@@ -413,11 +345,6 @@ public class ClusterRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> Long hset(String key, String field, T value, StringSerializer serializer) {
-        return jedisCluster.hset(key, field, serializer.serialize(value));
-    }
-
-    @Override
     public Long hset(byte[] key, Map<byte[], byte[]> values) {
         return jedisCluster.hset(key, values);
     }
@@ -425,11 +352,6 @@ public class ClusterRedisClient extends RedisClient {
     @Override
     public Long hset(byte[] key, byte[] field, byte[] value) {
         return jedisCluster.hset(key, field, value);
-    }
-
-    @Override
-    public <T> Long hset(byte[] key, byte[] field, T value, BytesSerializer serializer) {
-        return jedisCluster.hset(key, field, serializer.serialize(value));
     }
 
     @Override

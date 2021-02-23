@@ -11,6 +11,7 @@ import java.util.*;
 
 /**
  * 单点redisclient
+ *
  * @author cc.sen
  */
 public class SingleRedisClient extends RedisClient {
@@ -198,12 +199,12 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T get(String key, StringDeserializer deserializer, Class<T> clazz) {
+    public <R> R get(String key, StringDeserializer<R> deserializer) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
-            return deserializer.deserialize(jedis.get(key), clazz);
+            return deserializer.apply(jedis.get(key));
         } finally {
             if (null != jedis) {
                 jedis.close();
@@ -226,12 +227,12 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T get(byte[] key, BytesDeserializer deserializer, Class<T> clazz) {
+    public <R> R get(byte[] key, BytesDeserializer<R> deserializer) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
-            return deserializer.deserialize(jedis.get(key), clazz);
+            return deserializer.apply(jedis.get(key));
         } finally {
             if (null != jedis) {
                 jedis.close();
@@ -254,40 +255,12 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> String set(String key, T value, StringSerializer serializer) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.select(REDIS_DATABASE_INDEX.get());
-            return jedis.set(key, serializer.serialize(value));
-        } finally {
-            if (null != jedis) {
-                jedis.close();
-            }
-        }
-    }
-
-    @Override
     public String set(byte[] key, byte[] value) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
             return jedis.set(key, value);
-        } finally {
-            if (null != jedis) {
-                jedis.close();
-            }
-        }
-    }
-
-    @Override
-    public <T> String set(byte[] key, T value, BytesSerializer serializer) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.select(REDIS_DATABASE_INDEX.get());
-            return jedis.set(key, serializer.serialize(value));
         } finally {
             if (null != jedis) {
                 jedis.close();
@@ -338,40 +311,12 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> String setex(String key, int secs, T value, StringSerializer serializer) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.select(REDIS_DATABASE_INDEX.get());
-            return jedis.setex(key, secs, serializer.serialize(value));
-        } finally {
-            if (null != jedis) {
-                jedis.close();
-            }
-        }
-    }
-
-    @Override
     public String setex(byte[] key, int secs, byte[] value) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
             return jedis.setex(key, secs, value);
-        } finally {
-            if (null != jedis) {
-                jedis.close();
-            }
-        }
-    }
-
-    @Override
-    public <T> String setex(byte[] key, int secs, T value, BytesSerializer serializer) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.select(REDIS_DATABASE_INDEX.get());
-            return jedis.setex(key, secs, serializer.serialize(value));
         } finally {
             if (null != jedis) {
                 jedis.close();
@@ -478,48 +423,12 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> Long lpush(String key, T[] values, StringSerializer serializer) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.select(REDIS_DATABASE_INDEX.get());
-            List<String> strValues = new ArrayList<>();
-            for (T item : values) {
-                strValues.add(serializer.serialize(item));
-            }
-            return jedis.lpush(key, (String[]) strValues.toArray());
-        } finally {
-            if (null != jedis) {
-                jedis.close();
-            }
-        }
-    }
-
-    @Override
     public Long lpush(byte[] key, byte[]... values) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
             return jedis.lpush(key, values);
-        } finally {
-            if (null != jedis) {
-                jedis.close();
-            }
-        }
-    }
-
-    @Override
-    public <T> Long lpush(byte[] key, T[] values, BytesSerializer serializer) {
-        Jedis jedis = null;
-        Long ret = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.select(REDIS_DATABASE_INDEX.get());
-            for (T item : values) {
-                ret = jedis.lpush(key, serializer.serialize(item));
-            }
-            return ret;
         } finally {
             if (null != jedis) {
                 jedis.close();
@@ -542,12 +451,12 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T rpop(String key, StringDeserializer deserializer, Class<T> clazz) {
+    public <R> R rpop(String key, StringDeserializer<R> deserializer) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
-            return deserializer.deserialize(jedis.get(key), clazz);
+            return deserializer.apply(jedis.get(key));
         } finally {
             if (null != jedis) {
                 jedis.close();
@@ -570,12 +479,12 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T rpop(byte[] key, BytesDeserializer deserializer, Class<T> clazz) {
+    public <R> R rpop(byte[] key, BytesDeserializer<R> deserializer) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
-            return deserializer.deserialize(jedis.rpop(key), clazz);
+            return deserializer.apply(jedis.rpop(key));
         } finally {
             if (null != jedis) {
                 jedis.close();
@@ -598,48 +507,12 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> Long rpush(String key, T[] values, StringSerializer serializer) {
-        Jedis jedis = null;
-        Long ret = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.select(REDIS_DATABASE_INDEX.get());
-            for (T item : values) {
-                ret = jedis.rpush(key, serializer.serialize(item));
-            }
-            return ret;
-        } finally {
-            if (null != jedis) {
-                jedis.close();
-            }
-        }
-    }
-
-    @Override
     public Long rpush(byte[] key, byte[]... values) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
             return jedis.rpush(key, values);
-        } finally {
-            if (null != jedis) {
-                jedis.close();
-            }
-        }
-    }
-
-    @Override
-    public <T> Long rpush(byte[] key, T[] values, BytesSerializer serializer) {
-        Jedis jedis = null;
-        Long ret = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.select(REDIS_DATABASE_INDEX.get());
-            for (T item : values) {
-                ret = jedis.rpush(key, serializer.serialize(item));
-            }
-            return ret;
         } finally {
             if (null != jedis) {
                 jedis.close();
@@ -662,12 +535,12 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T lpop(String key, StringDeserializer deserializer, Class<T> clazz) {
+    public <R> R lpop(String key, StringDeserializer<R> deserializer) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
-            return deserializer.deserialize(jedis.get(key), clazz);
+            return deserializer.apply(jedis.get(key));
         } finally {
             if (null != jedis) {
                 jedis.close();
@@ -690,12 +563,12 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T lpop(byte[] key, BytesDeserializer deserializer, Class<T> clazz) {
+    public <R> R lpop(byte[] key, BytesDeserializer<R> deserializer) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
-            return deserializer.deserialize(jedis.get(key), clazz);
+            return deserializer.apply(jedis.get(key));
         } finally {
             if (null != jedis) {
                 jedis.close();
@@ -718,9 +591,9 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> List<T> lrange(String key, long start, long end, StringDeserializer deserializer, Class<T> clazz) {
+    public <R> List<R> lrange(String key, long start, long end, StringDeserializer<R> deserializer) {
         Jedis jedis = null;
-        List<T> list = null;
+        List<R> list = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
@@ -728,7 +601,7 @@ public class SingleRedisClient extends RedisClient {
             if (valueList != null) {
                 list = new ArrayList<>();
                 for (String item : valueList) {
-                    list.add(deserializer.deserialize(item, clazz));
+                    list.add(deserializer.apply(item));
                 }
             }
             return list;
@@ -754,9 +627,9 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> List<T> lrang(byte[] key, long start, long end, BytesDeserializer deserializer, Class<T> clazz) {
+    public <R> List<R> lrang(byte[] key, long start, long end, BytesDeserializer<R> deserializer) {
         Jedis jedis = null;
-        List<T> list = null;
+        List<R> list = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
@@ -764,7 +637,7 @@ public class SingleRedisClient extends RedisClient {
             if (valueList != null) {
                 list = new ArrayList<>();
                 for (byte[] item : valueList) {
-                    list.add(deserializer.deserialize(item, clazz));
+                    list.add(deserializer.apply(item));
                 }
             }
             return list;
@@ -874,12 +747,12 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> T hget(String key, String field, StringDeserializer deserializer, Class<T> clazz) {
+    public <R> R hget(String key, String field, StringDeserializer<R> deserializer) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
-            return deserializer.deserialize(jedis.hget(key, field), clazz);
+            return deserializer.apply(jedis.hget(key, field));
         } finally {
             if (null != jedis) {
                 jedis.close();
@@ -959,20 +832,6 @@ public class SingleRedisClient extends RedisClient {
     }
 
     @Override
-    public <T> Long hset(String key, String field, T value, StringSerializer serializer) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.select(REDIS_DATABASE_INDEX.get());
-            return jedis.hset(key, field, serializer.serialize(value));
-        } finally {
-            if (null != jedis) {
-                jedis.close();
-            }
-        }
-    }
-
-    @Override
     public Long hset(byte[] key, Map<byte[], byte[]> values) {
         Jedis jedis = null;
         try {
@@ -993,20 +852,6 @@ public class SingleRedisClient extends RedisClient {
             jedis = jedisPool.getResource();
             jedis.select(REDIS_DATABASE_INDEX.get());
             return jedis.hsetnx(key, field, value);
-        } finally {
-            if (null != jedis) {
-                jedis.close();
-            }
-        }
-    }
-
-    @Override
-    public <T> Long hset(byte[] key, byte[] field, T value, BytesSerializer serializer) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.select(REDIS_DATABASE_INDEX.get());
-            return jedis.hsetnx(key, field, serializer.serialize(value));
         } finally {
             if (null != jedis) {
                 jedis.close();

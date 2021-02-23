@@ -184,19 +184,15 @@ public abstract class RedisClient {
 
     public abstract String get(String key);
 
-    public abstract <T> T get(String key, StringDeserializer deserializer, Class<T> clazz);
+    public abstract <R> R get(String key, StringDeserializer<R> deserializer);
 
     public abstract byte[] get(byte[] key);
 
-    public abstract <T> T get(byte[] key, BytesDeserializer deserializer, Class<T> clazz);
+    public abstract <R> R get(byte[] key, BytesDeserializer<R> deserializer);
 
     public abstract String set(String key, String value);
 
-    public abstract <T> String set(String key, T value, StringSerializer serializer);
-
     public abstract String set(byte[] key, byte[] value);
-
-    public abstract <T> String set(byte[] key, T value, BytesSerializer serializer);
 
     public abstract long setnx(String key, String value);
 
@@ -204,11 +200,7 @@ public abstract class RedisClient {
 
     public abstract String setex(String key, int secs, String value);
 
-    public abstract <T> String setex(String key, int secs, T value, StringSerializer serializer);
-
     public abstract String setex(byte[] key, int secs, byte[] value);
-
-    public abstract <T> String setex(byte[] key, int secs, T value, BytesSerializer serializer);
 
     public abstract Long expire(String key, int secs);
 
@@ -224,43 +216,35 @@ public abstract class RedisClient {
 
     public abstract Long lpush(String key, String... values);
 
-    public abstract <T> Long lpush(String key, T[] values, StringSerializer serializer);
-
     public abstract Long lpush(byte[] key, byte[]... values);
-
-    public abstract <T> Long lpush(byte[] key, T[] values, BytesSerializer serializer);
 
     public abstract String rpop(String key);
 
-    public abstract <T> T rpop(String key, StringDeserializer deserializer, Class<T> clazz);
+    public abstract <R> R rpop(String key, StringDeserializer<R> deserializer);
 
     public abstract byte[] rpop(byte[] key);
 
-    public abstract <T> T rpop(byte[] key, BytesDeserializer deserializer, Class<T> clazz);
+    public abstract <R> R rpop(byte[] key, BytesDeserializer<R> deserializer);
 
     public abstract Long rpush(String key, String... values);
 
-    public abstract <T> Long rpush(String key, T[] values, StringSerializer serializer);
-
     public abstract Long rpush(byte[] key, byte[]... values);
-
-    public abstract <T> Long rpush(byte[] key, T[] values, BytesSerializer serializer);
 
     public abstract String lpop(String key);
 
-    public abstract <T> T lpop(String key, StringDeserializer deserializer, Class<T> clazz);
+    public abstract <R> R lpop(String key, StringDeserializer<R> deserializer);
 
     public abstract byte[] lpop(byte[] key);
 
-    public abstract <T> T lpop(byte[] key, BytesDeserializer deserializer, Class<T> clazz);
+    public abstract <R> R lpop(byte[] key, BytesDeserializer<R> deserializer);
 
     public abstract List<String> lrange(String key, long start, long end);
 
-    public abstract <T> List<T> lrange(String key, long start, long end, StringDeserializer deserializer, Class<T> clazz);
+    public abstract <R> List<R> lrange(String key, long start, long end, StringDeserializer<R> deserializer);
 
     public abstract List<byte[]> lrange(byte[] key, long start, long end);
 
-    public abstract <T> List<T> lrang(byte[] key, long start, long end, BytesDeserializer deserializer, Class<T> clazz);
+    public abstract <R> List<R> lrang(byte[] key, long start, long end, BytesDeserializer<R> deserializer);
 
     public abstract Long incr(String key);
 
@@ -276,7 +260,7 @@ public abstract class RedisClient {
 
     public abstract String hget(String key, String field);
 
-    public abstract <T> T hget(String key, String field, StringDeserializer deserializer, Class<T> clazz);
+    public abstract <R> R hget(String key, String field, StringDeserializer<R> deserializer);
 
     public abstract byte[] hget(byte[] key, byte[] field);
 
@@ -288,13 +272,9 @@ public abstract class RedisClient {
 
     public abstract Long hset(String key, String field, String value);
 
-    public abstract <T> Long hset(String key, String field, T value, StringSerializer serializer);
-
     public abstract Long hset(byte[] key, Map<byte[], byte[]> values);
 
     public abstract Long hset(byte[] key, byte[] field, byte[] value);
-
-    public abstract <T> Long hset(byte[] key, byte[] field, T value, BytesSerializer serializer);
 
     public abstract Long hsetnx(String key, String field, String value);
 
