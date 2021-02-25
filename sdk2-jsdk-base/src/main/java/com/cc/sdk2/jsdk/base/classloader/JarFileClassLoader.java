@@ -35,20 +35,22 @@ public class JarFileClassLoader extends URLClassLoader{
         while (dirList.size() > 0) {
             File dirFile = new File(dirList.get(0));
             File[] files = dirFile.listFiles();
-            for (File subFile : files) {
-                if (subFile.isDirectory()) {
-                    dirList.add(subFile.getAbsolutePath());
-                } else if (subFile.getName().toLowerCase().endsWith(".jar")) {
-                   //加载jar文件
-                    try {
-                        URL url = subFile.toURI().toURL();
-                        System.out.println(url);
-                        addURL(url);
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
+            if (files != null) {
+                for (File subFile : files) {
+                    if (subFile.isDirectory()) {
+                        dirList.add(subFile.getAbsolutePath());
+                    } else if (subFile.getName().toLowerCase().endsWith(".jar")) {
+                        //加载jar文件
+                        try {
+                            URL url = subFile.toURI().toURL();
+                            System.out.println(url);
+                            addURL(url);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        System.out.println("unknown file format");
                     }
-                } else {
-                    System.out.println("unknown file format");
                 }
             }
             dirList.remove(0);

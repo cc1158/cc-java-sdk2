@@ -44,16 +44,18 @@ public class FileClassLoader extends ClassLoader {
         while (dirList.size() > 0) {
             File dirFile = new File(dirList.get(0));
             File[] files = dirFile.listFiles();
-            for (File subFile : files) {
-                if (subFile.isDirectory()) {
-                    dirList.add(subFile.getAbsolutePath());
-                } else if (subFile.getName().toLowerCase().endsWith(".class")) {
-                    //java 字节码
-                    byte[] classBytes = readClassFile(subFile);
-                    Class<?> clazz = defineClass(null, classBytes, 0, classBytes.length);
-                    this.packageClassMap.put(clazz.getName(), clazz);
-                } else {
-                    System.out.println("unknown file format");
+            if (files != null) {
+                for (File subFile : files) {
+                    if (subFile.isDirectory()) {
+                        dirList.add(subFile.getAbsolutePath());
+                    } else if (subFile.getName().toLowerCase().endsWith(".class")) {
+                        //java 字节码
+                        byte[] classBytes = readClassFile(subFile);
+                        Class<?> clazz = defineClass(null, classBytes, 0, classBytes.length);
+                        this.packageClassMap.put(clazz.getName(), clazz);
+                    } else {
+                        System.out.println("unknown file format");
+                    }
                 }
             }
             dirList.remove(0);
