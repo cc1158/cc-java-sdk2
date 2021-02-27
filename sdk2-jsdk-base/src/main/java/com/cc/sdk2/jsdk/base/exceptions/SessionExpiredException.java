@@ -9,11 +9,20 @@ package com.cc.sdk2.jsdk.base.exceptions;
  **/
 public class SessionExpiredException extends BaseException {
 
+
     public SessionExpiredException(String msgCode) {
         super(msgCode);
     }
 
-    public SessionExpiredException(String message, String msgCode) {
-        super(message, msgCode);
+    public SessionExpiredException(String msgCode, String defaultMsg) {
+        super(msgCode, defaultMsg);
+    }
+
+    public SessionExpiredException(String msgCode, String defaultMsg, Object[] args) {
+        super(msgCode, defaultMsg, args);
+    }
+
+    public SessionExpiredException(String msgCode, String defaultMsg, Object[] args, Throwable cause) {
+        super(msgCode, defaultMsg, args, cause);
     }
 }

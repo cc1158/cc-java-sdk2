@@ -9,11 +9,20 @@ package com.cc.sdk2.jsdk.base.exceptions;
  **/
 public class RefreshTokenExpiredException extends BaseException {
 
+
     public RefreshTokenExpiredException(String msgCode) {
         super(msgCode);
     }
 
-    public RefreshTokenExpiredException(String message, String msgCode) {
-        super(message, msgCode);
+    public RefreshTokenExpiredException(String msgCode, String defaultMsg) {
+        super(msgCode, defaultMsg);
+    }
+
+    public RefreshTokenExpiredException(String msgCode, String defaultMsg, Object[] args) {
+        super(msgCode, defaultMsg, args);
+    }
+
+    public RefreshTokenExpiredException(String msgCode, String defaultMsg, Object[] args, Throwable cause) {
+        super(msgCode, defaultMsg, args, cause);
     }
 }

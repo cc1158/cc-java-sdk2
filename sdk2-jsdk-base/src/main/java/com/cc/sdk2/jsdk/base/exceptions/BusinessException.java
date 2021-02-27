@@ -11,51 +11,20 @@ import java.util.Locale;
  **/
 public final class BusinessException extends BaseException {
 
-    /**
-     * msg中的参数
-     */
-    private Object[] args;
-    /**
-     * 默认msg
-     */
-    private String defaultMsg;
-    /**
-     * local
-     */
-    private Locale locale;
-
-    public BusinessException(String msgCode, Object[] args) {
+    public BusinessException(String msgCode) {
         super(msgCode);
-        this.args = args;
     }
 
-    public BusinessException(String msgCode, Object[] args, String defaultMsg) {
-        super(defaultMsg, msgCode);
-        this.args = args;
-        this.defaultMsg = defaultMsg;
+    public BusinessException(String msgCode, String defaultMsg) {
+        super(msgCode, defaultMsg);
     }
 
-    public Object[] getArgs() {
-        return args;
+    public BusinessException(String msgCode, String defaultMsg, Object[] args) {
+        super(msgCode, defaultMsg, args);
     }
 
-    public void setArgs(Object[] args) {
-        this.args = args;
+    public BusinessException(String msgCode, String defaultMsg, Object[] args, Throwable cause) {
+        super(msgCode, defaultMsg, args, cause);
     }
 
-    public String getDefaultMsg() {
-        return defaultMsg;
-    }
-
-    public void setDefaultMsg(String defaultMsg) {
-        this.defaultMsg = defaultMsg;
-    }
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public void setLocale(Locale locale) {
-        this.locale = locale;
-    }
 }

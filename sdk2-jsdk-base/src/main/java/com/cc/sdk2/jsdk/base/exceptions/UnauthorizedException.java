@@ -9,12 +9,19 @@ package com.cc.sdk2.jsdk.base.exceptions;
  */
 public class UnauthorizedException extends BaseException {
 
-
     public UnauthorizedException(String msgCode) {
         super(msgCode);
     }
 
-    public UnauthorizedException(String message, String msgCode) {
-        super(message, msgCode);
+    public UnauthorizedException(String msgCode, String defaultMsg) {
+        super(msgCode, defaultMsg);
+    }
+
+    public UnauthorizedException(String msgCode, String defaultMsg, Object[] args) {
+        super(msgCode, defaultMsg, args);
+    }
+
+    public UnauthorizedException(String msgCode, String defaultMsg, Object[] args, Throwable cause) {
+        super(msgCode, defaultMsg, args, cause);
     }
 }

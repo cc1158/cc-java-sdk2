@@ -77,41 +77,51 @@ public class GlobalExceptionAdvice {
         return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code, e.getMessage());
     }
 
+    private String getI18nMsg(BaseException e) {
+        Locale locale = e.getLocale() == null ? LocaleContextHolder.getLocale() : e.getLocale();
+        String msg = messageSource.getMessage(e.getMsgCode(), e.getArgs(), e.getDefaultMsg(), locale);
+        return msg;
+    }
+
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.OK)
     public ApiResult<?> businessexception(BusinessException e) {
-        Locale locale = e.getLocale() == null ? LocaleContextHolder.getLocale() : e.getLocale();
-        String msg = messageSource.getMessage(e.getMsgCode(), e.getArgs(), e.getDefaultMsg(), locale);
-        return ResultBuilder.failure(msg);
+        e.setDefaultMsg(BaseErrorCode.Business_Error.getMsg());
+        return ResultBuilder.failure(getI18nMsg(e));
     }
 
     @ExceptionHandler(TokenInvalidException.class)
     @ResponseStatus(HttpStatus.OK)
     public ApiResult<?> invalidTokenException(TokenInvalidException e) {
-        return ResultBuilder.failure(BaseErrorCode.Token_Invalid);
+        e.setDefaultMsg(BaseErrorCode.Token_Invalid.msg);
+        return ResultBuilder.getApiResult(BaseErrorCode.Token_Invalid.code, getI18nMsg(e));
     }
 
     @ExceptionHandler(TokenExpiredException.class)
     @ResponseStatus(HttpStatus.OK)
     public ApiResult<?> accessTokenExpiredException(TokenExpiredException e) {
-        return ResultBuilder.failure(BaseErrorCode.Token_Expired);
+        e.setDefaultMsg(BaseErrorCode.Token_Expired.msg);
+        return ResultBuilder.getApiResult(BaseErrorCode.Token_Expired.code, getI18nMsg(e));
     }
 
     @ExceptionHandler(RefreshTokenExpiredException.class)
     @ResponseStatus(HttpStatus.OK)
     public ApiResult<?> refreshTokenExpiredException(RefreshTokenExpiredException e) {
-        return ResultBuilder.failure(BaseErrorCode.Refresh_Token_Expired);
+        e.setDefaultMsg(BaseErrorCode.Refresh_Token_Expired.msg);
+        return ResultBuilder.getApiResult(BaseErrorCode.Refresh_Token_Expired.code, getI18nMsg(e));
     }
 
     @ExceptionHandler(SessionExpiredException.class)
     @ResponseStatus(HttpStatus.OK)
     public ApiResult<?> refreshTokenExpiredException(SessionExpiredException e) {
-        return ResultBuilder.failure(BaseErrorCode.Session_Expired);
+        e.setDefaultMsg(BaseErrorCode.Session_Expired.msg);
+        return ResultBuilder.getApiResult(BaseErrorCode.Session_Expired.code, getI18nMsg(e));
     }
 
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ApiResult<?> unauthorizedException(UnauthorizedException e) {
-        return ResultBuilder.failure(BaseErrorCode.Unauthorized_Error);
+        e.setDefaultMsg(BaseErrorCode.Unauthorized_Error.msg);
+        return ResultBuilder.getApiResult(BaseErrorCode.Unauthorized_Error.code, getI18nMsg(e));
     }
 }
