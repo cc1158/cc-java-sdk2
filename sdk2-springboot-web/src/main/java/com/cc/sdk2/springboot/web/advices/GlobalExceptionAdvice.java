@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -36,13 +37,19 @@ public class GlobalExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiResult<?> exception500(Exception e) {
         e.printStackTrace();
-        return ResultBuilder.failure(BaseErrorCode.Server_Error);
+        return ResultBuilder.getApiResult(BaseErrorCode.Server_Error.code, e.getMessage());
     }
 
     @ExceptionHandler(value = {MissingServletRequestParameterException.class, IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResult<?> exception400(MissingServletRequestParameterException e) {
         return ResultBuilder.failure(BaseErrorCode.Bad_Request);
+    }
+
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResult<?> exceptionBodyNull(HttpMessageNotReadableException e) {
+        return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code, e.getMessage());
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
