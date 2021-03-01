@@ -16,7 +16,7 @@ public final class ResultBuilder {
      * @return 成功结果
      */
     public static ApiResult<?> success() {
-        return new ApiResult<>(BaseErrorCode.Success.code, BaseErrorCode.Success.msg);
+        return new ApiResult<>(BaseErrorCode.Success.code, BaseErrorCode.Success.msg, new HashMap<String, Object>(1));
     }
 
     /**
@@ -48,7 +48,7 @@ public final class ResultBuilder {
      * @return api result 对象
      */
     public static ApiResult<?> failure(ErrorCode errorCode) {
-        return new ApiResult<>(errorCode.getCode(), errorCode.getMsg());
+        return new ApiResult<>(errorCode.getCode(), errorCode.getMsg(), null);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class ResultBuilder {
      * @return api result 对象
      */
     public static ApiResult<?> failure(String msg) {
-        return new ApiResult<>(BaseErrorCode.Business_Error.code, msg);
+        return new ApiResult<>(BaseErrorCode.Business_Error.code, msg, null);
     }
 
 
