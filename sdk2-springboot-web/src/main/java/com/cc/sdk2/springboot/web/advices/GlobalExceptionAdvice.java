@@ -18,6 +18,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * web全局异常处理
@@ -49,7 +51,7 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResult<?> exceptionBodyNull(HttpMessageNotReadableException e) {
-        return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code, e.getMessage());
+        return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code, "Body Can't Be Readable Or Body Is Null");
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
@@ -63,14 +65,28 @@ public class GlobalExceptionAdvice {
     public ApiResult<?> exception405(MethodArgumentTypeMismatchException e) {
         return ResultBuilder.failure(BaseErrorCode.Method_Not_Allowed);
     }
+    /**
+     * 验证不能绑定国际化
+     * 临时方案
+      */
+    private static final Pattern VALIDATION_PATTERN = Pattern.compile("\\{(.+)\\}");
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResult<?> validationException(MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
         if (bindingResult.getFieldError() != null) {
-            return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code,
-                    String.format("%s  %s", bindingResult.getFieldError().getField(), bindingResult.getFieldError().getDefaultMessage()));
+            String msg = bindingResult.getFieldError().getDefaultMessage();
+            if ( msg != null) {
+                Matcher matcher = VALIDATION_PATTERN.matcher(bindingResult.getFieldError().getDefaultMessage());
+                if (matcher.matches()) {
+                    msg =  messageSource.getMessage(matcher.group(1), null, LocaleContextHolder.getLocale());
+                }
+                return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code, msg);
+//                return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code,
+//                        String.format("%s  %s", bindingResult.getFieldError().getField(), msg));
+            }
+
         }
         return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code, "Parameters Error");
     }
