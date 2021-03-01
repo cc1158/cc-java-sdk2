@@ -3,6 +3,8 @@ package com.cc.sdk2.springboot.web.advices;
 import com.cc.sdk2.jsdk.base.exceptions.*;
 import com.cc.sdk2.jsdk.commons.result.*;
 import com.cc.sdk2.jsdk.commons.utils.StringUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -32,6 +34,8 @@ import java.util.regex.Pattern;
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
 
+    private Logger logger = LogManager.getLogger(GlobalExceptionAdvice.class);
+
     @Autowired
     private MessageSource messageSource;
 
@@ -39,7 +43,8 @@ public class GlobalExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiResult<?> exception500(Exception e) {
         e.printStackTrace();
-        return ResultBuilder.getApiResult(BaseErrorCode.Server_Error.code, e.getMessage());
+        logger.error(e);
+        return ResultBuilder.failure(BaseErrorCode.Server_Error);
     }
 
     @ExceptionHandler(value = {MissingServletRequestParameterException.class, IllegalArgumentException.class})
