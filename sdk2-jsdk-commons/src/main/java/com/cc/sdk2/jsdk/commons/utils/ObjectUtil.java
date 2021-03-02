@@ -4,6 +4,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -106,20 +107,27 @@ public class ObjectUtil {
      * @param destInstance 目标对象
      * @param <T>          对象类型
      */
-    public static <T> void copyFields(T srcInstance, T destInstance) throws IllegalAccessException {
-        Field[] srcFields = getFields(srcInstance.getClass());
-        Field[] destFields = getFields(destInstance.getClass());
-        for (Field destF : destFields) {
-            for (Field srcF : srcFields) {
-                destF.setAccessible(true);
-                srcF.setAccessible(true);
-                //属性值不为空，名字相同，并且类型相同则进行赋值
-                if (srcF.get(srcInstance) != null
-                        && srcF.getName().equals(destF.getName())
-                        && srcF.getType().equals(destF.getType())) {
-                    destF.set(destInstance, srcF.get(srcInstance));
+    public static <T> void copyFields(T srcInstance, T destInstance) {
+        try {
+            Field[] srcFields = getFields(srcInstance.getClass());
+            Field[] destFields = getFields(destInstance.getClass());
+            for (Field destF : destFields) {
+                for (Field srcF : srcFields) {
+                    if (Modifier.isStatic(srcF.getModifiers()) && Modifier.isFinal(srcF.getModifiers())) {
+                        continue;
+                    }
+                    destF.setAccessible(true);
+                    srcF.setAccessible(true);
+                    //属性值不为空，名字相同，并且类型相同则进行赋值
+                    if (srcF.get(srcInstance) != null
+                            && srcF.getName().equals(destF.getName())
+                            && srcF.getType().equals(destF.getType())) {
+                        destF.set(destInstance, srcF.get(srcInstance));
+                    }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -157,7 +165,8 @@ public class ObjectUtil {
 
     /**
      * 对象序列化为字节数据组
-     * @param obj   对象
+     *
+     * @param obj 对象
      * @return 字节数组
      * @throws IOException
      */
@@ -173,8 +182,9 @@ public class ObjectUtil {
 
     /**
      * 对象字节数组反序列化为队形
-     * @param objBytes  对象字节数组
-     * @return  对象
+     *
+     * @param objBytes 对象字节数组
+     * @return 对象
      * @throws IOException
      * @throws ClassNotFoundException
      */
