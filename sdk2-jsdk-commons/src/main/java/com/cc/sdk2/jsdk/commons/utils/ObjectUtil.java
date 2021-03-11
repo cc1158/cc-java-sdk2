@@ -112,8 +112,13 @@ public class ObjectUtil {
             Field[] srcFields = getFields(srcInstance.getClass());
             Field[] destFields = getFields(destInstance.getClass());
             for (Field destF : destFields) {
+                //如果是 final,则用默认值
+                if (Modifier.isFinal(destF.getModifiers())) {
+                    continue;
+                }
                 for (Field srcF : srcFields) {
-                    if (Modifier.isStatic(srcF.getModifiers()) && Modifier.isFinal(srcF.getModifiers())) {
+		    //如果是 final,则用默认值
+                    if (Modifier.isFinal(srcF.getModifiers())) {
                         continue;
                     }
                     destF.setAccessible(true);
@@ -123,6 +128,7 @@ public class ObjectUtil {
                             && srcF.getName().equals(destF.getName())
                             && srcF.getType().equals(destF.getType())) {
                         destF.set(destInstance, srcF.get(srcInstance));
+			break;
                     }
                 }
             }
