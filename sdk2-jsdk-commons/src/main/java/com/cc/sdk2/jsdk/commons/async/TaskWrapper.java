@@ -26,7 +26,7 @@ class TaskWrapper<T> implements Callable<T> {
         try {
            return this.callableTask.call();
         } finally {
-            System.out.println(String.format("[TaskWrapper-execute] cost time(millis)=%d", (System.currentTimeMillis() - startTime)));
+            System.out.printf("[TaskWrapper-execute] cost time(millis)=%d%n", (System.currentTimeMillis() - startTime));
             taskCounter.decrease();
         }
     }
