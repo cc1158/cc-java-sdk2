@@ -1,7 +1,7 @@
 package com.cc.sdk2.test.jsdk.commons;
 
-import org.junit.Test;
 import com.cc.sdk2.jsdk.commons.date.DateUtil;
+import org.junit.Test;
 
 import java.util.Date;
 
@@ -25,6 +25,20 @@ public class TestDateUtil {
 
     @Test
     public void testFormat() {
-        System.out.println(DateUtil.formatDate(new Date(), "yyyy-MM-dd HH:mm:ss.SZ"));
+        System.out.println(DateUtil.formatDate(new Date(), "yyyy-MM-dd HH:mm:ssZ"));
+        System.out.println(DateUtil.formatDate(new Date(), "yyyy-MM-dd HH:mm:ssX"));
+        System.out.println(DateUtil.formatDate(new Date(), "yyyy-MM-dd HH:mm:ssXX"));
+        System.out.println(DateUtil.formatDate(new Date(), "yyyy-MM-dd HH:mm:ssXXX"));
     }
+
+    @Test
+    public void test1() {
+        try {
+            System.out.println(DateUtil.parseDateStr("2021-03-31 23:00:23+08:00", "yyyy-MM-dd HH:mm:ssXXX").getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
