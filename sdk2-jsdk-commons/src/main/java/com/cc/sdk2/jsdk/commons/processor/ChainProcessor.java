@@ -52,7 +52,7 @@ public abstract class ChainProcessor<T> {
      * @param context
      * @return 当前对象
      */
-    public ChainProcessor setContext(Context context) {
+    public ChainProcessor<T> setContext(Context context) {
         this.context = context;
         return this;
     }
