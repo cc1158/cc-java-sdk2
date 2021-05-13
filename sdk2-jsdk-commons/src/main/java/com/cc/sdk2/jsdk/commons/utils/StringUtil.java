@@ -163,6 +163,18 @@ public final class StringUtil {
         return (char) charCode;
     }
 
+    public static Pattern CHINESE_PATTERN = Pattern.compile("[\u4e00-\u9fa5]");
+    public static String getChineseCharacters(String str) {
+        Matcher matcher = CHINESE_PATTERN.matcher(str);
+        StringBuilder buf = new StringBuilder();
+        while (matcher.find()) {
+            buf.append(matcher.group());
+        }
+        return buf.toString();
+    }
+
+
+
     /**
      * @return 随机产生中文字符
      */
