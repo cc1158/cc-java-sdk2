@@ -264,22 +264,25 @@ public final class StringUtil {
      * @return
      */
     public static int countSmsSplitLength(String str) {
-        int bitCouter = 0;
-        Matcher matcher = ASCII_CHARACTER_PATTERN.matcher(str);
-        while (matcher.find()) {
-            bitCouter += 7;
-        }
-        matcher = NOT_ASCII_CHARACTER_PATTERN.matcher(str);
-        while (matcher.find()) {
-            bitCouter += 2 * 8;
-        }
-        int len = bitCouter / ONE_SMS_BIT_TOTAL;
-        if (bitCouter % ONE_SMS_BIT_TOTAL == 0) {
-            return len;
-        } else {
-            return len + 1;
-        }
+        boolean isChi = ASCII_CHARACTER_PATTERN.matcher(str).find();
 
+       int len = 1;
+        int bitCounter = 0;
+        for (char ch : str.toCharArray()) {
+            bitCounter += isChi ? 16 : 7;
+            if (bitCounter > ONE_SMS_BIT_TOTAL) {
+                len += 1;
+                bitCounter = bitCounter - ONE_SMS_BIT_TOTAL;
+                if (len == 2) {
+                    //第二条短信：需要填充两条协议长度
+                    //一条协议长度为7个字符，ascii编码
+                    bitCounter += 2 * (7 * 7);
+                } else {
+                    bitCounter += 7 * 7;
+                }
+            }
+        }
+        return len;
     }
 
     public static String left(String str, int len) {
