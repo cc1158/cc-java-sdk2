@@ -92,8 +92,10 @@ public class HttpRequest {
         conn.setRequestMethod(methodName);
         conn.setConnectTimeout(this.connTimeout);
         conn.setReadTimeout(this.readTimeout);
-        conn.setRequestProperty("accept", "*/*");
-        conn.setRequestProperty("cache-control", "no-cache");
+        conn.setRequestProperty("Accept", "*/*");
+        conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
+        conn.setRequestProperty("Cache-Control", "no-cache");
+        conn.setRequestProperty("Connection", "keep-alive");
         if (!StringUtil.isNullOrEmpty(userAgent)) {
             conn.setRequestProperty("User-Agent", userAgent);
         }
