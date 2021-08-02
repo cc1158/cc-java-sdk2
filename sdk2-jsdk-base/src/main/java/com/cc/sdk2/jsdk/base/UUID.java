@@ -99,6 +99,10 @@ public final class UUID {
         return ret;
     }
 
+    private String newJavaRandomId() {
+        return java.util.UUID.randomUUID().toString().replace("-", "");
+    }
+
     /**
      * 根据时间戳（MMddHHmmssS）生成UUID 20 bytes
      * @return
@@ -118,6 +122,13 @@ public final class UUID {
         return LazyHolder.uuid.genUUId(prefix, pattern, genLen > 0 ? genLen : 20);
     }
 
+    /**
+     * 生成随机uuid
+     * @return uuid
+     */
+    public static synchronized String newRandomUUId() {
+        return LazyHolder.uuid.newJavaRandomId();
+    }
 
 
 }

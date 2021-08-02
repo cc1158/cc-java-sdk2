@@ -29,6 +29,10 @@ public final class StringUtil {
         return false;
     }
 
+    public static boolean isNotNullOrEmpty(String str) {
+        return !isNullOrEmpty(str);
+    }
+
     public static boolean isNumeric(String str) {
         if (isNullOrEmpty(str)) {
             return false;
