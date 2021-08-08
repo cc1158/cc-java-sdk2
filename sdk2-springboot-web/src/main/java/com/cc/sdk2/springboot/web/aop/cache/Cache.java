@@ -32,7 +32,7 @@ public @interface Cache {
      *
      * @return 缓存实现类
      */
-    Class<? super CacheOperation> cacheOptClass();
+    Class<?> cacheOptClass();
 
     /**
      * 是否为删除操作

@@ -32,7 +32,6 @@ public class CacheAspect implements ApplicationContextAware {
 
     @Before(value = "@annotation(cache) && target(bean) ", argNames = "joinPoint, cache, bean")
     public void before(JoinPoint joinPoint, Cache cache, Object bean) {
-
     }
 
     @Around(value = "@annotation(cache)", argNames = "joinPoint, cache")
@@ -92,7 +91,6 @@ public class CacheAspect implements ApplicationContextAware {
 
     @After(value = "@annotation(cache)) && target(bean)", argNames = "joinPoint, cache")
     public void after(JoinPoint joinPoint, Cache cache) {
-        System.out.println("in after");
         NEED_PUT_CACHE.remove();
     }
 
