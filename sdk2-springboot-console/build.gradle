@@ -18,6 +18,9 @@ dependencies {
         exclude(group: 'org.springframework.boot', module: 'spring-boot-starter-logging')
         exclude(group: 'org.springframework.boot', module: 'spring-boot-starter')
     }
+    compile('org.springframework.boot:spring-boot-starter-aop:2.3.8.RELEASE') {
+        exclude(group: 'org.springframework.boot', module: 'spring-boot-starter')
+    }
     compile group: 'com.lmax', name: 'disruptor', version: '3.4.2'
 }
 

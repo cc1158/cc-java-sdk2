@@ -56,6 +56,8 @@ public class SdkSpringbootWebRegistrar implements ImportBeanDefinitionRegistrar,
             if (packages.length > 0) {
                 scanPackages.addAll(Arrays.asList(packages));
             }
+            //加入代理配置
+            scanPackages.add("com.cc.sdk2.springboot.web.aop");
             ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(beanDefinitionRegistry);
             scanner.setResourceLoader(this.resourceLoader);
             scanner.scan(scanPackages.stream().toArray(String[]::new));
