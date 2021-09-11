@@ -7,4 +7,5 @@ include 'sdk2-springboot-console'
 include 'sdk2-redis-client'
 include 'sdk2-rabbitmq-client'
 include 'sdk2-task-xxljob'
+include 'sdk2-jsdk-mybatis'
 

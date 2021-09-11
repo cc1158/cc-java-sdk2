@@ -7,21 +7,24 @@ package com.cc.sdk2.jsdk.base.exceptions;
  * @version 1.0
  * @date 2019/7/19 23:05
  */
-public class UnauthorizedException extends BaseException {
+public class UnauthorizedException extends BaseCheckedException {
 
-    public UnauthorizedException(String msgCode) {
-        super(msgCode);
+    public UnauthorizedException() {
+        super(1, 1, 401, "Not Authorized");
     }
 
-    public UnauthorizedException(String msgCode, String defaultMsg) {
-        super(msgCode, defaultMsg);
+
+    public UnauthorizedException(String defaultMessage) {
+        super(1, 1, 401, defaultMessage);
     }
 
-    public UnauthorizedException(String msgCode, String defaultMsg, Object[] args) {
-        super(msgCode, defaultMsg, args);
+    public UnauthorizedException(String defaultMessage, String i18nCode) {
+        super(1, 1, 401, defaultMessage, i18nCode);
     }
 
-    public UnauthorizedException(String msgCode, String defaultMsg, Object[] args, Throwable cause) {
-        super(msgCode, defaultMsg, args, cause);
+
+    public UnauthorizedException(String defaultMessage, String i18nCode, Throwable e) {
+        super(1, 1, 401, defaultMessage, i18nCode, e);
     }
+
 }
