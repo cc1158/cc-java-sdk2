@@ -1,7 +1,5 @@
 package com.cc.sdk2.jsdk.base.exceptions;
 
-import java.util.Locale;
-
 /**
  * All rights reserved, copyright@cc.hu
  * 业务异常
@@ -9,22 +7,26 @@ import java.util.Locale;
  * @version 1.0
  * @date 2019/7/19 23:05
  **/
-public final class BusinessException extends BaseException {
+public final class BusinessException extends BaseCheckedException {
 
-    public BusinessException(String msgCode) {
-        super(msgCode);
+    public BusinessException(int groupId, int serviceId) {
+        super(groupId, serviceId, 560, "Business Error");
     }
 
-    public BusinessException(String msgCode, String defaultMsg) {
-        super(msgCode, defaultMsg);
+
+    public BusinessException(int groupId, int serviceId, String defaultMessage) {
+        super(groupId, serviceId, 560, defaultMessage);
     }
 
-    public BusinessException(String msgCode, String defaultMsg, Object[] args) {
-        super(msgCode, defaultMsg, args);
+    public BusinessException(int groupId, int serviceId, String defaultMessage, String i18nCode) {
+        super(groupId, serviceId, 560, defaultMessage, i18nCode);
     }
 
-    public BusinessException(String msgCode, String defaultMsg, Object[] args, Throwable cause) {
-        super(msgCode, defaultMsg, args, cause);
+    public BusinessException(int groupId, int serviceId, String defaultMessage, String i18nCode, Object[] args) {
+        super(groupId, serviceId, 560, defaultMessage, i18nCode, args);
+    }
+    public BusinessException(int groupId, int serviceId, String defaultMessage, String i18nCode, Throwable e) {
+        super(groupId, serviceId, 560, defaultMessage, i18nCode, e);
     }
 
 }

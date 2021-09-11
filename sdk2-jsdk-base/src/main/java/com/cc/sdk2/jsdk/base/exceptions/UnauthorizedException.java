@@ -10,21 +10,25 @@ package com.cc.sdk2.jsdk.base.exceptions;
 public class UnauthorizedException extends BaseCheckedException {
 
     public UnauthorizedException() {
-        super(1, 1, 401, "Not Authorized");
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 401, "Not Authorized");
     }
 
 
     public UnauthorizedException(String defaultMessage) {
-        super(1, 1, 401, defaultMessage);
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 401, defaultMessage);
     }
 
     public UnauthorizedException(String defaultMessage, String i18nCode) {
-        super(1, 1, 401, defaultMessage, i18nCode);
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 401, defaultMessage, i18nCode);
+    }
+
+    public UnauthorizedException(String defaultMessage, String i18nCode, Object[] args) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 401, defaultMessage, i18nCode, args);
     }
 
 
     public UnauthorizedException(String defaultMessage, String i18nCode, Throwable e) {
-        super(1, 1, 401, defaultMessage, i18nCode, e);
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 401, defaultMessage, i18nCode, e);
     }
 
 }

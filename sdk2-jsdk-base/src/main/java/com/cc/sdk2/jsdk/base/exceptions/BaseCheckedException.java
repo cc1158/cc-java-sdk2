@@ -7,7 +7,7 @@ package com.cc.sdk2.jsdk.base.exceptions;
  * @version 1.0
  * @date 2019/7/19 23:05
  **/
-public class BaseCheckedException extends TException {
+public class BaseCheckedException extends RuntimeException {
 
     static final int MAX_GROUP_ID = 9;
     static final int MAX_SERVICE_ID = 999;
@@ -16,6 +16,8 @@ public class BaseCheckedException extends TException {
     private int code;
     private String defaultMessage;
     private String i18nCode;
+    private Object[] args;
+    private String i18nMessage;
 
     static int combineErrorCode(int groupId, int serviceId, int code) {
         if (groupId <= 0 || groupId > MAX_GROUP_ID) {
@@ -27,7 +29,7 @@ public class BaseCheckedException extends TException {
         if (code <= 0 || code > MAX_CODE_ID) {
             throw new IllegalArgumentException("错误编号越界");
         }
-        return groupId * 100000 + serviceId * 100 + code;
+        return groupId * 1000000 + serviceId * 1000 + code;
     }
 
     public BaseCheckedException(int groupId, int serviceId, int codeId) {
@@ -48,6 +50,14 @@ public class BaseCheckedException extends TException {
         this.i18nCode = i18nCode;
     }
 
+    public BaseCheckedException(int groupId, int serviceId, int codeId, String defaultMessage, String i18nCode, Object[] args) {
+        super(defaultMessage);
+        this.code = combineErrorCode(groupId, serviceId, codeId);
+        this.defaultMessage = defaultMessage;
+        this.i18nCode = i18nCode;
+        this.args = args;
+    }
+
     public BaseCheckedException(int groupId, int serviceId, int codeId, String defaultMessage, String i18nCode, Throwable e) {
         super(defaultMessage, e);
         this.code = combineErrorCode(groupId, serviceId, codeId);
@@ -65,5 +75,17 @@ public class BaseCheckedException extends TException {
 
     public String getI18nCode() {
         return i18nCode;
+    }
+
+    public Object[] getArgs() {
+        return args;
+    }
+
+    public String getI18nMessage() {
+        return i18nMessage;
+    }
+
+    public void setI18nMessage(String i18nMessage) {
+        this.i18nMessage = i18nMessage;
     }
 }

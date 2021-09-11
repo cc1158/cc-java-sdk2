@@ -7,22 +7,28 @@ package com.cc.sdk2.jsdk.base.exceptions;
  * @version 1.0
  * @date 2021/2/8 13:33
  **/
-public class TokenInvalidException extends BaseException {
+public class TokenInvalidException extends BaseCheckedException {
 
 
-    public TokenInvalidException(String msgCode) {
-        super(msgCode);
+    public TokenInvalidException() {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 490, "Token Is Null Or Invalid");
     }
 
-    public TokenInvalidException(String msgCode, String defaultMsg) {
-        super(msgCode, defaultMsg);
+
+    public TokenInvalidException(String defaultMessage) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 490, defaultMessage);
     }
 
-    public TokenInvalidException(String msgCode, String defaultMsg, Object[] args) {
-        super(msgCode, defaultMsg, args);
+    public TokenInvalidException(String defaultMessage, String i18nCode) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 490, defaultMessage, i18nCode);
     }
 
-    public TokenInvalidException(String msgCode, String defaultMsg, Object[] args, Throwable cause) {
-        super(msgCode, defaultMsg, args, cause);
+    public TokenInvalidException(String defaultMessage, String i18nCode, Object[] args) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 490, defaultMessage, i18nCode, args);
+    }
+
+
+    public TokenInvalidException(String defaultMessage, String i18nCode, Throwable e) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 490, defaultMessage, i18nCode, e);
     }
 }

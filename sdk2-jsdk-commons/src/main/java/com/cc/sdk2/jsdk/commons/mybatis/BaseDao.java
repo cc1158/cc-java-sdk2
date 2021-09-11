@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description
- *
- * @author sen.hu@zhaopin.com
- * @date 16:08 2021/2/3
- */
+ * All rights reserved, copyright@cc.hu
+ * 业务异常
+ * @author cc
+ * @version 1.0
+ * @date 2019/7/19 23:05
+ **/
 public abstract class BaseDao<T, P> {
 
     protected BaseMapper<T, P> baseMapper;

@@ -1,26 +1,33 @@
 package com.cc.sdk2.jsdk.base.exceptions;
 
 /**
- * Description
- * 请求参数异常
- * @author sen.hu@zhaopin.com
- * @date 18:16 2021/2/18
- */
-public class ParameterException extends BaseException {
+ * All rights reserved, copyright@cc.hu
+ * 业务异常
+ * @author cc
+ * @version 1.0
+ * @date 2019/7/19 23:05
+ **/
+public class ParameterException extends BaseCheckedException {
 
-    public ParameterException(String msgCode) {
-        super(msgCode);
+    public ParameterException() {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 400, "Parameters Error");
     }
 
-    public ParameterException(String msgCode, String defaultMsg) {
-        super(msgCode, defaultMsg);
+
+    public ParameterException(String defaultMessage) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 400, defaultMessage);
     }
 
-    public ParameterException(String msgCode, String defaultMsg, Object[] args) {
-        super(msgCode, defaultMsg, args);
+    public ParameterException(String defaultMessage, String i18nCode) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 400, defaultMessage, i18nCode);
     }
 
-    public ParameterException(String msgCode, String defaultMsg, Object[] args, Throwable cause) {
-        super(msgCode, defaultMsg, args, cause);
+    public ParameterException(String defaultMessage, String i18nCode, Object[] args) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 400, defaultMessage, i18nCode, args);
+    }
+
+
+    public ParameterException(String defaultMessage, String i18nCode, Throwable e) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 400, defaultMessage, i18nCode, e);
     }
 }

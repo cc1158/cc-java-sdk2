@@ -7,22 +7,28 @@ package com.cc.sdk2.jsdk.base.exceptions;
  * @version 1.0
  * @date 2021/2/8 13:34
  **/
-public class SessionExpiredException extends BaseException {
+public class SessionExpiredException extends BaseCheckedException {
 
 
-    public SessionExpiredException(String msgCode) {
-        super(msgCode);
+    public SessionExpiredException() {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 499, "Refresh Token Is Expired");
     }
 
-    public SessionExpiredException(String msgCode, String defaultMsg) {
-        super(msgCode, defaultMsg);
+
+    public SessionExpiredException(String defaultMessage) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 499, defaultMessage);
     }
 
-    public SessionExpiredException(String msgCode, String defaultMsg, Object[] args) {
-        super(msgCode, defaultMsg, args);
+    public SessionExpiredException(String defaultMessage, String i18nCode) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 499, defaultMessage, i18nCode);
     }
 
-    public SessionExpiredException(String msgCode, String defaultMsg, Object[] args, Throwable cause) {
-        super(msgCode, defaultMsg, args, cause);
+    public SessionExpiredException(String defaultMessage, String i18nCode, Object[] args) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 499, defaultMessage, i18nCode, args);
+    }
+
+
+    public SessionExpiredException(String defaultMessage, String i18nCode, Throwable e) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 499, defaultMessage, i18nCode, e);
     }
 }

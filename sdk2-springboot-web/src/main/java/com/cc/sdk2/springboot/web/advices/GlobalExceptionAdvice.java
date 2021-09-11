@@ -44,31 +44,31 @@ public class GlobalExceptionAdvice {
     public ApiResult<?> exception500(Exception e) {
         e.printStackTrace();
         logger.error(e);
-        return ResultBuilder.failure(BaseErrorCode.Server_Error);
+        return ResultBuilder.failure(new UnknownServerException());
     }
 
     @ExceptionHandler(value = {MissingServletRequestParameterException.class, IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResult<?> exception400(MissingServletRequestParameterException e) {
-        return ResultBuilder.failure(BaseErrorCode.Bad_Request);
+        return ResultBuilder.failure(new ParameterException(e.getMessage()));
     }
 
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResult<?> exceptionBodyNull(HttpMessageNotReadableException e) {
-        return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code, "Body Can't Be Readable Or Body Is Null");
+        return ResultBuilder.getApiResult(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase());
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiResult<?> exception404(NoHandlerFoundException e) {
-        return ResultBuilder.failure(BaseErrorCode.Not_Found);
+        return ResultBuilder.getApiResult(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public ApiResult<?> exception405(MethodArgumentTypeMismatchException e) {
-        return ResultBuilder.failure(BaseErrorCode.Method_Not_Allowed);
+        return ResultBuilder.getApiResult(HttpStatus.METHOD_NOT_ALLOWED.value(), HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase());
     }
     /**
      * 验证不能绑定国际化
@@ -87,69 +87,34 @@ public class GlobalExceptionAdvice {
                 if (matcher.matches()) {
                     msg =  messageSource.getMessage(matcher.group(1), null, LocaleContextHolder.getLocale());
                 }
-                return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code, msg);
+                return ResultBuilder.getApiResult(HttpStatus.BAD_REQUEST.value(),  msg);
 //                return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code,
 //                        String.format("%s  %s", bindingResult.getFieldError().getField(), msg));
             }
 
         }
-        return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code, "Parameters Error");
+        return ResultBuilder.getApiResult(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase());
     }
 
     @ExceptionHandler({ParameterException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResult<?> requestParameterException(ParameterException e) {
-        if (StringUtil.isNullOrEmpty(e.getMessage())) {
-            return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code, "Parameters Error");
+        return ResultBuilder.getApiResult(HttpStatus.BAD_REQUEST.value(), getI18nMsg(e));
+    }
+
+    private String getI18nMsg(BaseCheckedException e) {
+        if (StringUtil.isNotNullOrEmpty(e.getI18nCode())) {
+            return messageSource.getMessage(e.getI18nCode(), e.getArgs(), e.getDefaultMessage(), LocaleContextHolder.getLocale());
         }
-        return ResultBuilder.getApiResult(BaseErrorCode.Bad_Request.code, e.getMessage());
+        return null;
     }
 
-    private String getI18nMsg(BaseException e) {
-        Locale locale = e.getLocale() == null ? LocaleContextHolder.getLocale() : e.getLocale();
-        String msg = messageSource.getMessage(e.getMsgCode(), e.getArgs(), e.getDefaultMsg(), locale);
-        return msg;
+    @ExceptionHandler({BusinessException.class, TokenInvalidException.class, TokenExpiredException.class,
+            RefreshTokenExpiredException.class, SessionExpiredException.class, UnauthorizedException.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiResult<?> businessexception(BaseCheckedException e) {
+        e.setI18nMessage(getI18nMsg(e));
+        return ResultBuilder.failure(e);
     }
 
-    @ExceptionHandler(BusinessException.class)
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResult<?> businessexception(BusinessException e) {
-        e.setDefaultMsg(BaseErrorCode.Business_Error.getMsg());
-        return ResultBuilder.failure(getI18nMsg(e));
-    }
-
-    @ExceptionHandler(TokenInvalidException.class)
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResult<?> invalidTokenException(TokenInvalidException e) {
-        e.setDefaultMsg(BaseErrorCode.Token_Invalid.msg);
-        return ResultBuilder.getApiResult(BaseErrorCode.Token_Invalid.code, getI18nMsg(e));
-    }
-
-    @ExceptionHandler(TokenExpiredException.class)
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResult<?> accessTokenExpiredException(TokenExpiredException e) {
-        e.setDefaultMsg(BaseErrorCode.Token_Expired.msg);
-        return ResultBuilder.getApiResult(BaseErrorCode.Token_Expired.code, getI18nMsg(e));
-    }
-
-    @ExceptionHandler(RefreshTokenExpiredException.class)
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResult<?> refreshTokenExpiredException(RefreshTokenExpiredException e) {
-        e.setDefaultMsg(BaseErrorCode.Refresh_Token_Expired.msg);
-        return ResultBuilder.getApiResult(BaseErrorCode.Refresh_Token_Expired.code, getI18nMsg(e));
-    }
-
-    @ExceptionHandler(SessionExpiredException.class)
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResult<?> refreshTokenExpiredException(SessionExpiredException e) {
-        e.setDefaultMsg(BaseErrorCode.Session_Expired.msg);
-        return ResultBuilder.getApiResult(BaseErrorCode.Session_Expired.code, getI18nMsg(e));
-    }
-
-    @ExceptionHandler(UnauthorizedException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ApiResult<?> unauthorizedException(UnauthorizedException e) {
-        e.setDefaultMsg(BaseErrorCode.Unauthorized_Error.msg);
-        return ResultBuilder.getApiResult(BaseErrorCode.Unauthorized_Error.code, getI18nMsg(e));
-    }
 }

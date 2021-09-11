@@ -7,22 +7,28 @@ package com.cc.sdk2.jsdk.base.exceptions;
  * @version 1.0
  * @date 2021/2/8 13:36
  **/
-public class RefreshTokenExpiredException extends BaseException {
+public class RefreshTokenExpiredException extends BaseCheckedException {
 
 
-    public RefreshTokenExpiredException(String msgCode) {
-        super(msgCode);
+    public RefreshTokenExpiredException() {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 492, "Refresh Token Is Expired");
     }
 
-    public RefreshTokenExpiredException(String msgCode, String defaultMsg) {
-        super(msgCode, defaultMsg);
+
+    public RefreshTokenExpiredException(String defaultMessage) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 492, defaultMessage);
     }
 
-    public RefreshTokenExpiredException(String msgCode, String defaultMsg, Object[] args) {
-        super(msgCode, defaultMsg, args);
+    public RefreshTokenExpiredException(String defaultMessage, String i18nCode) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 492, defaultMessage, i18nCode);
     }
 
-    public RefreshTokenExpiredException(String msgCode, String defaultMsg, Object[] args, Throwable cause) {
-        super(msgCode, defaultMsg, args, cause);
+    public RefreshTokenExpiredException(String defaultMessage, String i18nCode, Object[] args) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 492, defaultMessage, i18nCode, args);
+    }
+
+
+    public RefreshTokenExpiredException(String defaultMessage, String i18nCode, Throwable e) {
+        super(BaseCode.GROUP_ID_FRAMEWORK, BaseCode.SERVICE_ID_FRAMEWORK, 492, defaultMessage, i18nCode, e);
     }
 }

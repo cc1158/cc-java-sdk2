@@ -1,5 +1,10 @@
 package com.cc.sdk2.jsdk.commons.result;
 
+import com.cc.sdk2.jsdk.base.exceptions.BaseCheckedException;
+import com.cc.sdk2.jsdk.base.exceptions.BaseCode;
+import com.cc.sdk2.jsdk.base.exceptions.BusinessException;
+import com.cc.sdk2.jsdk.commons.utils.StringUtil;
+
 import java.util.HashMap;
 
 /**
@@ -16,7 +21,7 @@ public final class ResultBuilder {
      * @return 成功结果
      */
     public static ApiResult<?> success() {
-        return new ApiResult<>(BaseErrorCode.Success.code, BaseErrorCode.Success.msg, new HashMap<String, Object>(1));
+        return new ApiResult<>(BaseCode.SUCCESS_CODE, BaseCode.SUCCESS_CODE_MESSAGE, new HashMap<String, Object>(1));
     }
 
     /**
@@ -27,7 +32,7 @@ public final class ResultBuilder {
      * @return api result对象
      */
     public static <T> ApiResult<T> success(T data) {
-        return new ApiResult<>(BaseErrorCode.Success.code, BaseErrorCode.Success.msg, data);
+        return new ApiResult<>(BaseCode.SUCCESS_CODE, BaseCode.SUCCESS_CODE_MESSAGE, data);
     }
 
     /**
@@ -44,11 +49,11 @@ public final class ResultBuilder {
     /**
      * 根据error code 获取api result
      *
-     * @param errorCode errorcode 实现对象
+     * @param checkedException errorcode 实现对象
      * @return api result 对象
      */
-    public static ApiResult<?> failure(ErrorCode errorCode) {
-        return new ApiResult<>(errorCode.getCode(), errorCode.getMsg(), null);
+    public static ApiResult<?> failure(BaseCheckedException checkedException) {
+        return new ApiResult<>(checkedException.getCode(), StringUtil.isNotNullOrEmpty(checkedException.getI18nMessage()) ? checkedException.getI18nMessage() : checkedException.getDefaultMessage(), null);
     }
 
     /**
@@ -57,8 +62,8 @@ public final class ResultBuilder {
      * @param msg 提示
      * @return api result 对象
      */
-    public static ApiResult<?> failure(String msg) {
-        return new ApiResult<>(BaseErrorCode.Business_Error.code, msg, null);
+    public static ApiResult<?> failure(int groupId, int serviceId, String msg) {
+        return new ApiResult<>(new BusinessException(groupId, serviceId).getCode(), msg, null);
     }
 
 
